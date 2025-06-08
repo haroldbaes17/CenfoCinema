@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Data.SqlClient;
+using Microsoft.VisualBasic;
 
 namespace DataAccess.DAO
 {
@@ -24,7 +27,7 @@ namespace DataAccess.DAO
         // Paso 2: Redefinir el constructor default y convertirlo en privado
         private SqlDao()
         {
-            _connectionString = string.Empty;
+            _connectionString = @"Data Source=srv-sqldatabase-hbarrantese.database.windows.net;Initial Catalog=cenfocinemas-db;Persist Security Info=True;User ID=sysman;Password=Cenfotec123!;Trust Server Certificate=True";
         }
 
         // Paso 3: Definir el metodo que expone la instancia
@@ -38,10 +41,26 @@ namespace DataAccess.DAO
         }
 
         // Metodo para la ejecucion de Store Procedures sin retorno
-        public void ExecuteProcedure(SqlOperation operation)
+        public void ExecuteProcedure(SqlOperation sqlOperation)
         {
-            // Conectarse a la base de datos
-            // Ejecutar el Store Procedure
+            using (var conn = new SqlConnection(_connectionString))
+            {
+                using (var command = new SqlCommand(sqlOperation.ProcedureName, conn)
+                       {
+                           CommandType = System.Data.CommandType.StoredProcedure
+                       })
+                {
+                    //Set de los parametros
+                    foreach (var param in sqlOperation.Parameters)
+                    {
+                        command.Parameters.Add(param);
+                    }
+                    //Ejectura el SP
+                    conn.Open();
+                    command.ExecuteNonQuery();
+                }
+
+            }
         }
 
         //Metodo para la ejecucion de Store Procedures con retorno de data
