@@ -3,6 +3,7 @@ using DataAccess.CRUD;
 using DataAccess.DAO;
 using DTOs;
 using Newtonsoft.Json;
+using JsonConverter = System.Text.Json.Serialization.JsonConverter;
 
 public class Program
 {
@@ -17,7 +18,10 @@ public class Program
             Console.WriteLine("4. Actualizar un Usuario");
             Console.WriteLine("5. Eliminar Usuario");
             Console.WriteLine("6. Consultar Usuarios");
-            Console.WriteLine("9. Salir");
+            Console.WriteLine("7. Consultar Usuario por ID");
+            Console.WriteLine("8. Consultar Peliculas");
+            Console.WriteLine("9. Consultar Pelicula por ID");
+            Console.WriteLine("99. Salir");
             Console.Write("Seleccione una opción: ");
             int input = Int32.Parse(Console.ReadLine());
 
@@ -41,8 +45,16 @@ public class Program
                 case 6:
                     listarUsuarios();
                     break;
-
+                case 7:
+                    listarUsuarioPorId();
+                    break;
+                case 8:
+                    listarPeliculas();
+                    break;
                 case 9:
+                    listarPeliculaPorId();
+                    break;
+                case 99:
                     Console.WriteLine("Saliendo del programa...");
                     return;
                 default: 
@@ -70,17 +82,18 @@ public class Program
        var director = Console.ReadLine();
 
         //Logica para agregar la película
-        var sqlOperation = new SqlOperation();
-        sqlOperation.ProcedureName = "CRE_MOVIE_PR";
+        
+        var movie = new Movie()
+        {
+            Title = titulo,
+            Description = descripcion,
+            ReleaseDate = DateTime.Now,
+            Genre = genero,
+            Director = director
+        };
 
-        sqlOperation.AddStringParameter("P_Title", titulo);
-        sqlOperation.AddStringParameter("P_Description", descripcion);
-        sqlOperation.AddStringParameter("P_Genre", genero);
-        sqlOperation.AddDateTimeParam("P_ReleaseDate", DateTime.Now);
-        sqlOperation.AddStringParameter("P_Director", director);
-
-        var sqlDao = SqlDao.GetInstance();
-        sqlDao.ExecuteProcedure(sqlOperation);
+        var mCrud = new MovieCrudFactory();
+        mCrud.Create(movie);
 
         Console.WriteLine("Película agregada exitosamente.");
     }
@@ -221,5 +234,37 @@ public class Program
         {
             Console.WriteLine(JsonConvert.SerializeObject(u));
         }
+    }
+
+    private static void listarUsuarioPorId()
+    {
+        Console.Write("Ingrese el ID del Usuario a consultar: ");
+        int id = Int32.Parse(Console.ReadLine());
+
+        var uCrud = new UserCrudFactory();
+        var user = uCrud.RetrieveById<User>(id);
+
+        Console.WriteLine(JsonConvert.SerializeObject(user));
+    }
+
+    private static void listarPeliculas()
+    {
+        var mCrud = new MovieCrudFactory();
+        var listMovies = mCrud.RetrieveAll<Movie>();
+
+        foreach (var m in listMovies)
+        {
+            Console.WriteLine(JsonConvert.SerializeObject(m));
+        }
+    }
+
+    private static void listarPeliculaPorId()
+    {
+        Console.Write("Ingrese el ID de la película a consultar: ");
+        int id = Int32.Parse(Console.ReadLine());
+        
+        var mCrud = new MovieCrudFactory();
+        var movie = mCrud.RetrieveById<Movie>(id);
+        Console.WriteLine(JsonConvert.SerializeObject(movie));
     }
 }
