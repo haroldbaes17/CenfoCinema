@@ -42,21 +42,22 @@ namespace WebAPI.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpGet]
         [Route("RetrieveById")]
-        public ActionResult RetrieveById(Movie movie)
+        public ActionResult RetrieveById(int id)
         {
             try
             {
                 var mManager = new MovieManager();
-                var movieFound = mManager.RetrieveById(movie);
+                var movie = new Movie { Id = id };
+                movie = mManager.RetrieveById(movie);
 
-                if (movieFound == null)
+                if (movie == null)
                 {
                     throw new Exception("Película no encontrada.");
                 }
 
-                return Ok(movieFound);
+                return Ok(movie);
             }
             catch (Exception e)
             {
@@ -64,19 +65,21 @@ namespace WebAPI.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpGet]
         [Route("RetrieveByTitle")]
-        public ActionResult RetrieveByTitle(Movie movie)
+        public ActionResult RetrieveByTitle(string title)
         {
             try
             {
                 var mManager = new MovieManager();
-                var movieFound = mManager.RetrieveByTitle(movie);
-                if (movieFound == null)
+                var movie = new Movie { Title = title };
+                movie = mManager.RetrieveByTitle(movie);
+
+                if (movie == null)
                 {
                     throw new Exception("Película no encontrada.");
                 }
-                return Ok(movieFound);
+                return Ok(movie);
             }
             catch (Exception e)
             {

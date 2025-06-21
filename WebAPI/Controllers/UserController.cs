@@ -44,21 +44,22 @@ namespace WebAPI.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpGet]
         [Route("RetrieveById")]
-        public ActionResult RetrieveById(User user)
+        public ActionResult RetrieveById(int id)
         {
             try
             {
                 var uManager = new UserManager();
-                var userFound = uManager.RetrieveById(user);
+                var user = new User { Id = id }; 
+                user = uManager.RetrieveById(user);
 
-                if (userFound == null)
+                if (user == null)
                 {
                     throw new Exception("Usuario no encontrado.");
                 }
 
-                return Ok(userFound);
+                return Ok(user);
                 
             }
             catch (Exception e)
@@ -67,21 +68,22 @@ namespace WebAPI.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpGet]
         [Route("RetrieveByUserCode")]
-        public ActionResult RetrieveByUserCode(User user)
+        public ActionResult RetrieveByUserCode(string userCode)
         {
             try
             {
                 var uManager = new UserManager();
-                var userFound = uManager.RetrieveByUserCode(user);
+                var user = new User { UserCode = userCode };
+                user  = uManager.RetrieveByUserCode(user);
 
-                if (userFound == null)
+                if (user == null)
                 {
                     throw new Exception("Usuario no encontrado.");
                 }
 
-                return Ok(userFound);
+                return Ok(user);
             }
             catch (Exception e)
             {
@@ -89,21 +91,22 @@ namespace WebAPI.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpGet]
         [Route("RetrieveByEmail")]
-        public ActionResult RetrieveByEmail(User user)
+        public ActionResult RetrieveByEmail(string email)
         {
             try
             {
                 var uManager = new UserManager();
-                var userFound = uManager.RetrieveByEmail(user);
+                var user = new User { Email = email };
+                 user = uManager.RetrieveByEmail(user);
 
-                if (userFound == null)
+                if (user == null)
                 {
                     throw new Exception("Usuario no encontrado.");
                 }
 
-                return Ok(userFound);
+                return Ok(user);
             }
             catch (Exception e)
             {
