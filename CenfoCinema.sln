@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35707.178 d17.12
+VisualStudioVersion = 17.12.35707.178
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DTOs", "DTOs\DTOs.csproj", "{FBB4F0BD-E1F1-4C7B-B4CF-A6057B8DA8CD}"
 EndProject
@@ -30,6 +30,12 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "99_Testing", "99_Testing", "{9F5074B0-CB06-4760-9C89-8B376E87D399}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevTester", "DevTester\DevTester.csproj", "{6FFE9BA1-2EDF-4FF7-A281-F05D26DA4EB5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8EC462FD-D22E-90A8-E5CE-7E832BA40C5D}"
+	ProjectSection(SolutionItems) = preProject
+		.env = .env
+		.gitignore = .gitignore
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -77,5 +83,8 @@ Global
 		{9239FAE9-76E6-412F-8DA2-5448E5560ED3} = {D49D5ED1-9CA1-4194-84A4-80D92FCE109E}
 		{9B388C7D-235E-4BDC-BC66-E4C4A30EBE27} = {9003019B-82AD-42D7-95EC-017468189081}
 		{6FFE9BA1-2EDF-4FF7-A281-F05D26DA4EB5} = {9F5074B0-CB06-4760-9C89-8B376E87D399}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C5ADAD16-1F5F-4CA3-A285-D482D9C36BBB}
 	EndGlobalSection
 EndGlobal

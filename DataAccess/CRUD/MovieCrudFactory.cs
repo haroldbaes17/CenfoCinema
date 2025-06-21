@@ -46,7 +46,7 @@ namespace DataAccess.CRUD
         public override T RetrieveById<T>(int Id)
         {
             var lstMovie = new List<T>();
-            var sqlOperation = new SqlOperation() { ProcedureName = "RET_MOVIEBYID_PR" };
+            var sqlOperation = new SqlOperation() { ProcedureName = "RET_MOVIE_BY_ID_PR" };
             sqlOperation.AddIntParam("P_Id", Id);
             var lstResults = _sqlDao.ExecuteQueryProcedure(sqlOperation);
 
@@ -55,6 +55,21 @@ namespace DataAccess.CRUD
                 var row = lstResults[0];
                 var movie = BuildMovie(row);
                 lstMovie.Add((T)Convert.ChangeType(movie, typeof(T)));
+            }
+            return lstMovie.Count > 0 ? lstMovie[0] : default(T);
+        }
+
+        public T RetrieveByTitle<T>(Movie movie)
+        {
+            var lstMovie = new List<T>();
+            var sqlOperation = new SqlOperation() { ProcedureName = "RET_MOVIE_BY_ID_PR" };
+            sqlOperation.AddStringParameter("P_Title", movie.Title);
+            var lstResults = _sqlDao.ExecuteQueryProcedure(sqlOperation);
+
+            if (lstResults.Count > 0)
+            {
+                var row = lstResults[0];
+                lstMovie.Add((T)Convert.ChangeType(BuildMovie(row), typeof(T)));
             }
             return lstMovie.Count > 0 ? lstMovie[0] : default(T);
         }
