@@ -1,4 +1,5 @@
 ﻿using System.Text.Json.Serialization;
+using CoreApp;
 using DataAccess.CRUD;
 using DataAccess.DAO;
 using DTOs;
@@ -162,8 +163,8 @@ public class Program
             Status = "Activo" // Estado por defecto
         };
 
-        var uCrud = new UserCrudFactory();
-        uCrud.Create(user);
+        var uManager = new UserManager();
+        uManager.Create(user);
 
         Console.WriteLine("Usuario agregado exitosamente.");
     }

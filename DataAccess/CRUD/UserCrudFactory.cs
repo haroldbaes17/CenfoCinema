@@ -32,12 +32,28 @@ namespace DataAccess.CRUD
 
         public override void Update(BaseDto baseDto)
         {
-            throw new NotImplementedException();
+            var user = baseDto as User;
+
+            var sqlOperation = new SqlOperation() { ProcedureName = "UPD_USER_PR" };
+            sqlOperation.AddIntParam("P_Id", user.Id);
+            sqlOperation.AddStringParameter("P_UserCode", user.UserCode);
+            sqlOperation.AddStringParameter("P_Name", user.Name);
+            sqlOperation.AddStringParameter("P_Email", user.Email);
+            sqlOperation.AddStringParameter("P_Password", user.Password);
+            sqlOperation.AddDateTimeParam("P_BirthDate", user.BirthDate);
+            sqlOperation.AddStringParameter("P_Status", user.Status);
+
+            _sqlDao.ExecuteProcedure(sqlOperation);
         }
 
         public override void Delete(BaseDto baseDto)
         {
-            throw new NotImplementedException();
+            var user = baseDto as User;
+
+            var sqlOperation = new SqlOperation() { ProcedureName = "DEL_USER_PR" };
+            sqlOperation.AddIntParam("P_Id", user.Id);
+
+            _sqlDao.ExecuteProcedure(sqlOperation);
         }
 
         public override T Retrieve<T>()
@@ -47,7 +63,6 @@ namespace DataAccess.CRUD
 
         public override T RetrieveById<T>(int Id)
         {
-            var lstUser = new List<T>();
             var sqlOperation = new SqlOperation() { ProcedureName = "RET_USER_BY_ID_PR" };
             sqlOperation.AddIntParam("P_Id", Id);
             var lstResults = _sqlDao.ExecuteQueryProcedure(sqlOperation);
@@ -56,41 +71,46 @@ namespace DataAccess.CRUD
             {
                 var row = lstResults[0];
                 var user = BuildUser(row);
-                lstUser.Add((T)Convert.ChangeType(user, typeof(T)));
+
+                return (T)Convert.ChangeType(user, typeof(T));
             }
 
-            return lstUser.Count > 0 ? lstUser[0] : default(T);
+            return default(T);
         }
 
         public  T RetrieveByUserCode<T>(User user)
         {
-            var lstUser = new List<T>();
             var sqlOperation = new SqlOperation() { ProcedureName = "RET_USER_BY_CODE_PR" };
             sqlOperation.AddStringParameter("P_UserCode", user.UserCode);
+
             var lstResults = _sqlDao.ExecuteQueryProcedure(sqlOperation);
 
             if (lstResults.Count > 0)
             {
                 var row = lstResults[0];
-                lstUser.Add((T)Convert.ChangeType(BuildUser(row), typeof(T)));
+                user = BuildUser(row);
+
+                return (T)Convert.ChangeType(user, typeof(T));
             }
 
-            return lstUser.Count > 0 ? lstUser[0] : default(T);
+            return default(T);
         }
 
         public T RetrieveByEmail<T>(User user)
         {
-            var lstUser = new List<T>();
             var sqlOperation = new SqlOperation() { ProcedureName = "RET_USER_BY_EMAIL_PR" };
             sqlOperation.AddStringParameter("P_Email", user.Email);
+
             var lstResults = _sqlDao.ExecuteQueryProcedure(sqlOperation);
 
             if (lstResults.Count > 0)
             {
                 var row = lstResults[0];
-                lstUser.Add((T)Convert.ChangeType(BuildUser(row), typeof(T)));
+                user = BuildUser(row);
+
+                return (T)Convert.ChangeType(user, typeof(T));
             }
-            return lstUser.Count > 0 ? lstUser[0] : default(T);
+            return default(T);
         }
 
         public override List<T> RetrieveAll<T>()

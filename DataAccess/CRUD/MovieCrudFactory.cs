@@ -11,6 +11,10 @@ namespace DataAccess.CRUD
 {
     public class MovieCrudFactory : CrudFactory
     {
+        public MovieCrudFactory()
+        {
+            _sqlDao = SqlDao.GetInstance();
+        }
         public override void Create(BaseDto baseDto)
         {
             var movie = baseDto as Movie;
@@ -24,18 +28,31 @@ namespace DataAccess.CRUD
             sqlOperation.AddDateTimeParam("P_ReleaseDate", movie.ReleaseDate);
             sqlOperation.AddStringParameter("P_Director", movie.Director);
 
-            var sqlDao = SqlDao.GetInstance();
-            sqlDao.ExecuteProcedure(sqlOperation);
+            _sqlDao.ExecuteProcedure(sqlOperation);
         }
 
         public override void Update(BaseDto baseDto)
         {
-            throw new NotImplementedException();
+            var movie = baseDto as Movie;
+
+            var sqlOperation = new SqlOperation() { ProcedureName = "UPD_MOVIE_PR" };
+            sqlOperation.AddIntParam("P_Id", movie.Id);
+            sqlOperation.AddStringParameter("P_Title", movie.Title);
+            sqlOperation.AddStringParameter("P_Description", movie.Description);
+            sqlOperation.AddStringParameter("P_Genre", movie.Genre);
+            sqlOperation.AddStringParameter("P_Director", movie.Director);
+
+            _sqlDao.ExecuteProcedure(sqlOperation);
         }
 
         public override void Delete(BaseDto baseDto)
         {
-            throw new NotImplementedException();
+            var movie = baseDto as Movie;
+
+            var sqlOperation = new SqlOperation() { ProcedureName = "DEL_MOVIE_PR" };
+            sqlOperation.AddIntParam("P_Id", movie.Id);
+
+            _sqlDao.ExecuteProcedure(sqlOperation);
         }
 
         public override T Retrieve<T>()
@@ -62,7 +79,7 @@ namespace DataAccess.CRUD
         public T RetrieveByTitle<T>(Movie movie)
         {
             var lstMovie = new List<T>();
-            var sqlOperation = new SqlOperation() { ProcedureName = "RET_MOVIE_BY_ID_PR" };
+            var sqlOperation = new SqlOperation() { ProcedureName = "RET_MOVIE_BY_TITLE_PR" };
             sqlOperation.AddStringParameter("P_Title", movie.Title);
             var lstResults = _sqlDao.ExecuteQueryProcedure(sqlOperation);
 

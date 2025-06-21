@@ -52,6 +52,50 @@ namespace CoreApp
             }
         }
 
+        public List<Movie> RetrieveAll()
+        {
+            var mCrud = new MovieCrudFactory();
+            return mCrud.RetrieveAll<Movie>();
+        }
+
+        public Movie RetrieveById(Movie movie)
+        {
+            var mCrud = new MovieCrudFactory();
+            return mCrud.RetrieveById<Movie>(movie.Id);
+        }
+
+        public Movie RetrieveByTitle(Movie movie)
+        {
+            var mCrud = new MovieCrudFactory();
+            return mCrud.RetrieveByTitle<Movie>(movie);
+        }
+
+        public void Update(Movie movie)
+        {
+            try
+            {
+                var mCrud = new MovieCrudFactory();
+                mCrud.Update(movie);
+            }
+            catch (Exception ex)
+            {
+                ManageException(ex);
+            }
+        }
+
+        public void Delete(Movie movie)
+        {
+            try
+            {
+                var mCrud = new MovieCrudFactory();
+                mCrud.Delete(movie);
+            }
+            catch (Exception ex)
+            {
+                ManageException(ex);
+            }
+        }
+
         async Task SendEmailToUsers(Movie movie, List<User> lstUsers)
         {
             

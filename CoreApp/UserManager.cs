@@ -66,6 +66,56 @@ namespace CoreApp
             }
         }
 
+        public List<User> RetrieveAll()
+        {
+            var uCrud = new UserCrudFactory();
+            return uCrud.RetrieveAll<User>();
+        }
+
+        public User RetrieveById(User user)
+        {
+            var uCrud = new UserCrudFactory();
+            return uCrud.RetrieveById<User>(user.Id);
+        }
+
+        public User RetrieveByUserCode(User user)
+        {
+            var uCrud = new UserCrudFactory();
+            return uCrud.RetrieveByUserCode<User>(user);
+        }
+
+        public User RetrieveByEmail(User user)
+        {
+            var uCrud = new UserCrudFactory();
+            return uCrud.RetrieveByEmail<User>(user);
+        }
+
+        public void Update(User user)
+        {
+            try
+            {
+                var uCrud = new UserCrudFactory();
+                uCrud.Update(user);
+            }
+            catch (Exception ex)
+            {
+                ManageException(ex);
+            }
+        }
+
+        public void Delete(User user)
+        {
+            try
+            {
+                var uCrud = new UserCrudFactory();
+                uCrud.Delete(user);
+            }
+            catch (Exception ex)
+            {
+                ManageException(ex);
+            }
+        }
+
         private bool IsOver18(User user)
         {
             var currentDate = DateTime.Now;
@@ -78,9 +128,10 @@ namespace CoreApp
             return age >= 18;
         }
 
-        async Task SendWelcomeEmail(User user)
+        private async Task SendWelcomeEmail(User user)
         {
-            Env.Load();
+            Env.Load(Path.Combine(AppContext.BaseDirectory, ".env"));
+
             var apiKey = Environment.GetEnvironmentVariable("SENDGRID_API_KEY");
 
             if (string.IsNullOrEmpty(apiKey))
