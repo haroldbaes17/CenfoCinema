@@ -130,13 +130,7 @@ namespace CoreApp
 
         private async Task SendWelcomeEmail(User user)
         {
-            Env.Load(Path.Combine(AppContext.BaseDirectory, ".env"));
-
             var apiKey = Environment.GetEnvironmentVariable("SENDGRID_API_KEY");
-
-            if (string.IsNullOrEmpty(apiKey))
-                throw new InvalidOperationException("Falta la clave SENDGRID_API_KEY en el entorno.");
-
             var client = new SendGridClient(apiKey);
             var from = new EmailAddress("hbarrantese@ucenfotec.ac.cr", "Harold Barrantes");
             var subject = $"Bienvenido a CenfoCinemas, es un placer conocerte, {user.Name}!";

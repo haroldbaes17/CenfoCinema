@@ -101,10 +101,7 @@ namespace CoreApp
             
             foreach (var user in lstUsers)
             {
-                Env.Load();
                 var apiKey = Environment.GetEnvironmentVariable("SENDGRID_API_KEY");
-                if (string.IsNullOrEmpty(apiKey))
-                    throw new InvalidOperationException("Falta la clave SENDGRID_API_KEY en el entorno.");
                 var client = new SendGridClient(apiKey);
                 var from = new EmailAddress("hbarrantese@ucenfotec.ac.cr", "Harold Barrantes");
                 var subject = $"Nueva Pelicula en estreno!";

@@ -25,7 +25,7 @@ namespace DataAccess.CRUD
             sqlOperation.AddStringParameter("P_Email", user.Email);
             sqlOperation.AddStringParameter("P_Password", user.Password);
             sqlOperation.AddDateTimeParam("P_BirthDate", user.BirthDate);
-            sqlOperation.AddStringParameter("P_Status", user.Status);
+            sqlOperation.AddStringParameter("P_Status", "Activo"); // Estado por defecto al crear un usuario
 
             _sqlDao.ExecuteProcedure(sqlOperation);
         }
