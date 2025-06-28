@@ -1,6 +1,6 @@
 ﻿function ControlActions() {
 	//Ruta base del API
-	this.URL_API = "https://localhost:7285/api/"; 
+	this.URL_API = window.API_URL; 
 
 	this.GetUrlApiService = function (service) {
 		return this.URL_API + service;

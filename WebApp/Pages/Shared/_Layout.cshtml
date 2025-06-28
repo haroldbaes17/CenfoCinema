@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -15,6 +18,10 @@
     <script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js"></script>
     
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+	
+    <script>
+        window.API_URL = '@Configuration["API_URL"]';
+    </script>
 
     <script src="~/js/pages/controlactions.js"></script>
 
@@ -55,5 +62,6 @@
             &copy; 2025 - WebApp - <a asp-area="" asp-page="/Privacy">Privacy</a>
         </div>
     </footer>
+
 </body>
 </html>
