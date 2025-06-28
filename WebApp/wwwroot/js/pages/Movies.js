@@ -5,6 +5,22 @@
     this.InitView = function () {
         console.log("Movies init view --> ok");
         this.LoadTable();
+
+        //Asociar el evento al boton 
+        $("#btnCreate").click(function () {
+            var vc = new MoviesViewController();
+            vc.Create();
+        });
+
+        $("#btnUpdate").click(function () {
+            var vc = new MoviesViewController();
+            vc.Update();
+        });
+
+        $("#btnDelete").click(function () {
+            var vc = new MoviesViewController();
+            vc.Delete();
+        });
     }
 
     this.LoadTable = function () {
@@ -48,8 +64,101 @@
                 url: urlService,
                 "dataSrc": ""
             },
-            "columns":columns,
-        })
+            "columns": columns,
+        });
+
+        $("#tblMovies tbody").on("click",
+            "tr",
+            function () {
+                //Extraemos la fila
+                var row = $(this).closest("tr");
+
+                //Extraemos el dto
+                //Esto nos devuelve el JSON de la fila seleccionada por el usuario
+                //Segun la data devuelta por el API
+                var movieDto = $("#tblMovies").DataTable().row(row).data();
+
+                //Binding con el form
+                $("#txtId").val(movieDto.id);
+                $("#txtTitle").val(movieDto.title);
+                $("#txtDescription").val(movieDto.description);
+                $("#txtGenre").val(movieDto.genre);
+                $("#txtDirector").val(movieDto.director);
+
+                //Fecha tiene un formato
+                var onlyDate = movieDto.releaseDate.split("T");
+                $("#txtReleaseDate").val(onlyDate[0]);
+
+            });
+    }
+
+    this.Create = function() {
+        var movieDto = {}
+
+        movieDto.id = 0;
+        movieDto.created = "2025-01-01";
+        movieDto.updated = "2025-01-01";
+
+        movieDto.title = $("#txtTitle").val();
+        movieDto.description = $("#txtDescription").val();
+        movieDto.releaseDate = $("#txtReleaseDate").val();
+        movieDto.genre = $("#txtGenre").val();
+        movieDto.director = $("#txtDirector").val();
+
+        var ca = new ControlActions();
+        var urlService = this.APIEndpoint + "/Create";
+
+        ca.PostToAPI(urlService,
+            movieDto,
+            function () {
+                $("#tblMovies").DataTable().ajax.reload();
+        });
+    }
+
+    this.Update = function() {
+        var movieDto = {}
+
+        movieDto.id = $("#txtId").val();
+        movieDto.created = "2025-01-01";
+        movieDto.updated = "2025-01-01";
+
+        movieDto.title = $("#txtTitle").val();
+        movieDto.description = $("#txtDescription").val();
+        movieDto.releaseDate = $("#txtReleaseDate").val();
+        movieDto.genre = $("#txtGenre").val();
+        movieDto.director = $("#txtDirector").val();
+
+        var ca = new ControlActions();
+        var urlService = this.APIEndpoint + "/Update";
+
+        ca.PutToAPI(urlService,
+            movieDto,
+            function() {
+                $("#tblMovies").DataTable().ajax.reload();
+            });
+    }
+
+    this.Delete = function() {
+        var movieDto = {}
+
+        movieDto.id = $("#txtId").val();
+        movieDto.created = "2025-01-01";
+        movieDto.updated = "2025-01-01";
+
+        movieDto.title = $("#txtTitle").val();
+        movieDto.description = $("#txtDescription").val();
+        movieDto.releaseDate = $("#txtReleaseDate").val();
+        movieDto.genre = $("#txtGenre").val();
+        movieDto.director = $("#txtDirector").val();
+
+        var ca = new ControlActions();
+        var urlService = this.APIEndpoint + "/Delete";
+
+        ca.DeleteToAPI(urlService,
+            movieDto,
+            function() {
+                $("#tblMovies").DataTable().ajax.reload();
+            });
     }
 }
 
