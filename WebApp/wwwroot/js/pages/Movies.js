@@ -21,6 +21,11 @@
             var vc = new MoviesViewController();
             vc.Delete();
         });
+
+        $("#btnSearch").click(function () {
+            var vc = new MoviesViewController();
+            vc.SearchById();
+        });
     }
 
     this.LoadTable = function () {
@@ -158,6 +163,40 @@
             movieDto,
             function() {
                 $("#tblMovies").DataTable().ajax.reload();
+            });
+    }
+
+    this.SearchById = function () {
+        //Obtener el id del input
+        var id = $("#searchById").val().trim();
+
+
+        //Enviar la data al API
+        var ca = new ControlActions();
+        var service = this.APIEndpoint + "/RetrieveById?id=" + encodeURIComponent(id);
+
+        ca.GetToApi(
+            service,
+            function (response) {
+                var movieDto = Array.isArray(response) ? response[0] : response;
+
+                if (!movieDto) {
+                    alert("No se encontró ninguna pelicula con ID = " + id);
+                    return;
+                }
+
+                $("#txtId").val(movieDto.id);
+                $("#txtTitle").val(movieDto.title);
+                $("#txtDescription").val(movieDto.description);
+                $("#txtGenre").val(movieDto.genre);
+                $("#txtDirector").val(movieDto.director);
+
+                //Fecha tiene un formato
+                var onlyDate = movieDto.releaseDate.split("T");
+                $("#txtReleaseDate").val(onlyDate[0]);
+
+                var table = $("#tblMovies").DataTable();
+                table.clear().rows.add([user]).draw();
             });
     }
 }

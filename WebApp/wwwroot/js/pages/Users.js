@@ -26,6 +26,13 @@ function UsersViewController() {
             var vc = new UsersViewController();
             vc.Delete();
         });
+
+        $("#btnSearch").click(function () {
+            var vc = new UsersViewController();
+            vc.SearchById();
+        });
+
+
     }
 
     //Metodo para la carga de una tabla 
@@ -186,6 +193,40 @@ function UsersViewController() {
             function () {
                 //Recargo de la tabla
                 $("#tblUsers").DataTable().ajax.reload();
+            });
+    }
+
+    this.SearchById = function () {
+        //Obtener el id del input
+        var id = $("#searchById").val().trim();
+
+
+        //Enviar la data al API
+        var ca = new ControlActions();
+        var service = this.APIEndpoint + "/RetrieveById?id=" + encodeURIComponent(id);
+
+        ca.GetToApi(
+            service,
+            function (response) {
+                var userDto = Array.isArray(response) ? response[0] : response;
+
+                if (!userDto) {
+                    alert("No se encontró ningun usuario con ID = " + id);
+                    return;
+                }
+
+                $("#txtId").val(userDto.id);
+                $("#txtUserCode").val(userDto.userCode);
+                $("#txtName").val(userDto.name);
+                $("#txtEmail").val(userDto.email);
+                $("#txtStatus").val(userDto.status);
+
+                //Fecha tiene un formato
+                var onlyDate = userDto.birthDate.split("T");
+                $("#txtBirthDate").val(onlyDate[0]);
+
+                var table = $("#tblUsers").DataTable();
+                table.clear().rows.add([user]).draw();
             });
     }
 }
