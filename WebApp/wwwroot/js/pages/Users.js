@@ -226,7 +226,7 @@ function UsersViewController() {
                 $("#txtBirthDate").val(onlyDate[0]);
 
                 var table = $("#tblUsers").DataTable();
-                table.clear().rows.add([user]).draw();
+                table.clear().rows.add([userDto]).draw();
             });
     }
 }

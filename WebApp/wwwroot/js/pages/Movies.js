@@ -196,7 +196,7 @@
                 $("#txtReleaseDate").val(onlyDate[0]);
 
                 var table = $("#tblMovies").DataTable();
-                table.clear().rows.add([user]).draw();
+                table.clear().rows.add([movieDto]).draw();
             });
     }
 }
